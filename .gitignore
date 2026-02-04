@@ -151,14 +151,14 @@ venv.bak/
 models/
 
 # Common files cave: ignore output image folders
-common files cave/Edited Images/
-common files cave/Final Versions/
-common files cave/Generated Images/
+pipeline/common files cave/Edited Images/
+pipeline/common files cave/Final Versions/
+pipeline/common files cave/Generated Images/
 
 # Common files: ignore output image folders
-common files/Edited Images/
-common files/Final Versions/
-common files/Generated Images/
+pipeline/common files/Edited Images/
+pipeline/common files/Final Versions/
+pipeline/common files/Generated Images/
 
 # Spyder project settings
 .spyderproject
