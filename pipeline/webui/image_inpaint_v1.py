@@ -17,7 +17,7 @@ input_image_path = Path(args.image)
 mask_path = Path(args.mask)
 
 # -------- PATHS --------
-BASE_DIR = Path("F:/TextTo360")
+BASE_DIR = Path(__file__).resolve().parent
 
 MODEL_PATH = BASE_DIR / "models" / "Stable-diffusion" / "abyssorangemix2SFW_abyssorangemix2Sfw.safetensors"
 LORA_DIR = BASE_DIR / "models" / "Lora"

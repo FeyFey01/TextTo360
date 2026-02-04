@@ -103,10 +103,10 @@ def upscale_image_extras(
     return save_path
 
 
-upscaled_bytes = upscale_image_extras(
-    "F:/TextTo360/pipeline/common files/Final Versions/final_merged_panorama.png",
-    scale=8
-)
+# upscaled_bytes = upscale_image_extras(
+#     "F:/TextTo360/pipeline/common files/Final Versions/final_merged_panorama.png",
+#     scale=8
+# )
 
-with open("F:/TextTo360/output_upscaled.png", "wb") as f:
-    f.write(upscaled_bytes)
+# with open("F:/TextTo360/output_upscaled.png", "wb") as f:
+#     f.write(upscaled_bytes)

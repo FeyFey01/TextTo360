@@ -83,14 +83,14 @@ def unwrap_and_merge(top_disk_path, main_image_path, bottom_disk_path, strip_hei
     return save_path
 
 
-# --- Example usage ---
-if __name__ == "__main__":
-    merged_img = unwrap_and_merge(
-        top_disk_path=r"F:/TextTo360/pipeline/common files/Generated Images/top_circle_inpainted.png",
-        main_image_path=r"F:/TextTo360/pipeline/common files/Generated Images/infilled_result.png",
-        bottom_disk_path=r"F:/TextTo360/pipeline/common files/Generated Images/bottom_circle_inpainted.png",
-        strip_height=256,
-        cut_height=200
-    )
+# # --- Example usage ---
+# if __name__ == "__main__":
+#     merged_img = unwrap_and_merge(
+#         top_disk_path=r"F:/TextTo360/pipeline/common files/Generated Images/top_circle_inpainted.png",
+#         main_image_path=r"F:/TextTo360/pipeline/common files/Generated Images/infilled_result.png",
+#         bottom_disk_path=r"F:/TextTo360/pipeline/common files/Generated Images/bottom_circle_inpainted.png",
+#         strip_height=256,
+#         cut_height=200
+#     )
 
 

@@ -183,11 +183,11 @@ def img2img_inpaint(
 
 
 
-# --- Example usage ---
-if __name__ == "__main__":
-    output_bytes = img2img_inpaint(
-        image_path="F:/TextTo360/pipeline/common files/Edited Images/bottom_circle.png",
-        mask_path="F:/TextTo360/pipeline/common files/Edited Images/bottom_circle_mask.png",
-        extra_prompt="flat snow, snow texture, snowy ground, flat, simple, winter, J_game_background <lora:J_game_background:0.8>"  # custom text added to prompt
-    )
+# # --- Example usage ---
+# if __name__ == "__main__":
+#     output_bytes = img2img_inpaint(
+#         image_path="F:/TextTo360/pipeline/common files/Edited Images/bottom_circle.png",
+#         mask_path="F:/TextTo360/pipeline/common files/Edited Images/bottom_circle_mask.png",
+#         extra_prompt="flat snow, snow texture, snowy ground, flat, simple, winter, J_game_background <lora:J_game_background:0.8>"  # custom text added to prompt
+#     )
 

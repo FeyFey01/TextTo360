@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog
+from pathlib import Path
 
 from runners.gpt import generate_scene_keywords
 from runners.run_cmd import run_cmd_live_json
@@ -19,9 +20,29 @@ from webui.image_upscale_v1 import upscale_image_extras
 from webui.image_inpaint import img2img_inpaint
 from webui.image_infill_seam import img2img_inpaint_midseam
 
+# =========================================================
+# COMMON FILES DIRECTORY SETUP
+# =========================================================
 
-PIPELINE_DIR = Path(r"F:/TextTo360/pipeline")
+
+PIPELINE_DIR = Path(__file__).resolve().parent
+
 IMAGE_GEN_SCRIPT = PIPELINE_DIR / "image_generation_v1.py"
+
+COMMON_FILES_DIR = PIPELINE_DIR / "common files"
+
+GENERATED_IMAGES_DIR = COMMON_FILES_DIR / "Generated Images"
+EDITED_IMAGES_DIR = COMMON_FILES_DIR / "Edited Images"
+FINAL_VERSIONS_DIR = COMMON_FILES_DIR / "Final Versions"
+
+# Create directories if they do not exist
+for directory in [
+    COMMON_FILES_DIR,
+    GENERATED_IMAGES_DIR,
+    EDITED_IMAGES_DIR,
+    FINAL_VERSIONS_DIR,
+]:
+    directory.mkdir(parents=True, exist_ok=True)
 
 
 
@@ -99,29 +120,44 @@ bottom_circle, bottom_masked_circle = bottom_strip_to_circle_and_mask(
     infilled_image
 )
 
-# -------- RUN INFILL --------
+# -------- (ASK IF) RUN INFILL --------
+is_fill_top = input("Infill top circle? (y/n): ").strip().lower() == "y"
+is_fill_bottom = input("Infill bottom circle? (y/n): ").strip().lower() == "y"
 
-top_infilled = img2img_inpaint(
-    image_path=top_circle,
-    mask_path=top_masked_circle,
-    extra_prompt=keywords["top"]
-)
+if is_fill_top:
+    print("Top circle will be infilled.")
 
-bottom_infilled = img2img_inpaint(
-    image_path=bottom_circle,
-    mask_path=bottom_masked_circle,
-    extra_prompt=keywords["bottom"]
-)
+    top_infilled = img2img_inpaint(
+        image_path=top_circle,
+        mask_path=top_masked_circle,
+        extra_prompt=keywords["top"]
+    )
 
-selected_top = select_image_gui([
-    top_infilled,
-    top_circle
-])
+    selected_top = select_image_gui([
+        top_infilled,
+        top_circle
+    ])
 
-selected_bottom = select_image_gui([
-    bottom_infilled,
-    bottom_circle
-])
+else:
+    selected_top = top_circle
+
+
+if is_fill_bottom:
+    print("Bottom circle will be infilled.")
+
+    bottom_infilled = img2img_inpaint(
+        image_path=bottom_circle,
+        mask_path=bottom_masked_circle,
+        extra_prompt=keywords["bottom"]
+    )
+
+    selected_bottom = select_image_gui([
+        bottom_infilled,
+        bottom_circle
+    ])
+
+else:
+    selected_bottom = bottom_circle
 
 # -------- MERGE 3 PARTS --------
 

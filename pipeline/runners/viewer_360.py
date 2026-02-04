@@ -7,6 +7,8 @@ import os
 load_dotenv()
 
 IMGBB_API_KEY = os.getenv("IMGBB_API_KEY")
+UPLOAD_URL = os.getenv("IMGBB_UPLOAD_URL")
+URL_TO_LOAD = os.getenv("360_VIEWER_URL")
 
 def upload_and_view(image_path):
     # Make sure path is valid
@@ -21,7 +23,7 @@ def upload_and_view(image_path):
 
     # Upload to ImgBB
     response = requests.post(
-        "https://api.imgbb.com/1/upload",
+        UPLOAD_URL,
         params={"key": IMGBB_API_KEY},
         files={"image": image_data}
     )
@@ -40,7 +42,7 @@ def upload_and_view(image_path):
     print("Image uploaded successfully:", image_url)
 
     # Open the 360 panorama viewer with the uploaded image
-    viewer_url = f"https://renderstuff.com/tools/360-panorama-web-viewer/panorama_360_vr?image={image_url}"
+    viewer_url = f"{URL_TO_LOAD}{image_url}"
     webbrowser.open(viewer_url)
     print("Opened 360 panorama viewer.")
 
