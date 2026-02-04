@@ -87,6 +87,9 @@ ipython_config.py
 #   intended to run in multiple environments; otherwise, check them in:
 # .python-version
 
+# pyenv version file (ignore local python version files)
+.python-version
+
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
 #   However, in case of collaboration, if having platform-specific dependencies or dependencies
@@ -143,6 +146,19 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Large model files: keep local models out of git
+models/
+
+# Common files cave: ignore output image folders
+common files cave/Edited Images/
+common files cave/Final Versions/
+common files cave/Generated Images/
+
+# Common files: ignore output image folders
+common files/Edited Images/
+common files/Final Versions/
+common files/Generated Images/
 
 # Spyder project settings
 .spyderproject
