@@ -151,9 +151,7 @@ def img2img_inpaint_midseam(
 # =========================================================
 
 # output_bytes = img2img_inpaint_midseam(
-#     image_path="F:/TextTo3601/pipeline/common files/Generated Images/abyssorangemix_seed_517337055_swapped.png",
-#     mask_path="F:/TextTo3601/pipeline/common files/Generated Images/abyssorangemix_seed_517337055_swapped_center_mask.png"
+#     image_path="F:/TextTo360/pipeline/common files/Edited Images/abyssorangemix_seed_517337054_swapped.png",
+#     mask_path="F:/TextTo360/pipeline/common files/Edited Images/abyssorangemix_seed_517337054_swapped_mask.png"
 # )
 
-# with open("F:/TextTo360/output_infilled.png", "wb") as f:
-#     f.write(output_bytes)

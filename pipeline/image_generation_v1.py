@@ -15,10 +15,11 @@ user_text = args.text
 
 # -------- PATHS --------
 BASE_DIR = Path(__file__).resolve().parent
+ROOT_DIR = BASE_DIR.parent  # <-- THIS is the missing piece
 
-MODEL_PATH = BASE_DIR / "models" / "Stable-diffusion" / "abyssorangemix2SFW_abyssorangemix2Sfw.safetensors"
-LORA_DIR = BASE_DIR / "models" / "Lora"
-OUTPUT_DIR = BASE_DIR / "pipeline" / "common files" / "generated images"
+MODEL_PATH = ROOT_DIR / "models" / "Stable-diffusion" / "abyssorangemix2SFW_abyssorangemix2Sfw.safetensors"
+LORA_DIR = ROOT_DIR / "models" / "Lora"
+OUTPUT_DIR = ROOT_DIR / "pipeline" / "common files" / "generated images"
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -62,7 +63,7 @@ negative_prompt = (
 
 # -------- GENERATION --------
 base_seed = 517337054
-batch_count = 4
+batch_count = 2
 generated_paths = []
 
 for i in range(batch_count):

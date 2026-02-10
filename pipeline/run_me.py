@@ -15,15 +15,18 @@ from runners.top_circle import top_strip_to_circle_and_mask
 from runners.bottom_circle import bottom_strip_to_circle_and_mask
 from runners.merger import unwrap_and_merge
 from runners.viewer_360 import upload_and_view
+from runners.extend_image import extend_image_horizontal_wrap
 
 from webui.image_upscale_v1 import upscale_image_extras
 from webui.image_inpaint import img2img_inpaint
 from webui.image_infill_seam import img2img_inpaint_midseam
 
+from depth_map.depth_map import generate_depth_map
+from depth_map.depth_map_layer_segmentation import generate_depth_layers
+
 # =========================================================
 # COMMON FILES DIRECTORY SETUP
 # =========================================================
-
 
 PIPELINE_DIR = Path(__file__).resolve().parent
 
@@ -81,34 +84,39 @@ else:
 # ================= END COMMENT ===================
 
 # UNCOMMENT HERE IF DEBUGGING WITH PRE-GENERATED IMAGE
-# selected_image = r"F:\TextTo360\pipeline\common files\Generated Images\abyssorangemix_seed_517337055.png"
+# selected_image = r"F:\TextTo360\pipeline\common files\Generated Images\abyssorangemix_seed_517337054.png"
+
+
+
+
+
+
 
 
 # -------- RUN PANORAMA SWAP (VISIBLE OUTPUT) --------
-# swap_cmd = [
-#     sys.executable,
-#     str(PIPELINE_DIR / "runners" / "horizontal_swap.py"),
-#     "-i", selected_image,
-#     "-o", selected_image.replace(".png", "_swapped.png")
-# ]
-
-# swapped_image = run_cmd_live_json(swap_cmd)
-
-out = swap_image_halves(
+swapped_image = swap_image_halves(
     selected_image
 )
 
 mask_img = create_center_alpha_mask(
-    image_path=out,
+    image_path=swapped_image,
     strip_width=60
 )
 
 # -------- RUN INFILL --------
+while True:
+    infilled_image = img2img_inpaint_midseam(
+        image_path=swapped_image,
+        mask_path=Path(mask_img)
+    )
 
-infilled_image = img2img_inpaint_midseam(
-    image_path=out,
-    mask_path=Path(mask_img)
-)
+    upload_and_view(infilled_image)
+
+    answer = input("Would you like to retry? (y/n): ").strip().lower()
+    if answer == "n":
+        break
+
+
 
 # -------- CREATE TOP AND BOTTOM CIRCLES AND MASKS --------
 
@@ -163,7 +171,7 @@ else:
 
 merged_img = unwrap_and_merge(
     top_disk_path=selected_top,
-    main_image_path=bottom_infilled,
+    main_image_path=infilled_image,
     bottom_disk_path=selected_bottom
 )
 
@@ -179,3 +187,19 @@ upscaled_image = upscale_image_extras(
 upload_and_view(upscaled_image)
 
 
+
+
+# -------- EXTEND IMAGE HORIZONTALLY FOR DEPTH MAP GENERATION (VISIBLE OUTPUT) --------
+upscaled_image_extended = extend_image_horizontal_wrap(upscaled_image)
+
+# -------- RUN DEPTH MAP GENERATION (VISIBLE OUTPUT) --------
+
+generate_depth_map(
+    wrapped_image_path= upscaled_image_extended,
+    infilled_image_path= upscaled_image
+)
+
+generate_depth_layers(
+    wrapped_image_path= upscaled_image_extended,
+    infilled_image_path= upscaled_image
+)

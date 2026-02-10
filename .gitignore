@@ -150,10 +150,8 @@ venv.bak/
 # Large model files: keep local models out of git
 models/
 
-# Common files cave: ignore output image folders
-pipeline/common files cave/Edited Images/
-pipeline/common files cave/Final Versions/
-pipeline/common files cave/Generated Images/
+# Common files older versions
+old_outputs/
 
 # Common files: ignore output image folders
 pipeline/common files/Edited Images/

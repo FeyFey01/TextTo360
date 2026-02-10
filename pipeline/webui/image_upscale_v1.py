@@ -13,7 +13,7 @@ def upscale_image_extras(
     image: Union[str, Path, bytes],
     scale: int = 8,
     upscaler_1: str = "R-ESRGAN 4x+ Anime6B",
-    upscaler_2: str = "4xSmoothRealism",
+    upscaler_2: str = "4x_foolhardy_Remacri_ExtraSmoother",
     upscaler_2_visibility: float = 0.15,
 ) -> bytes:
     """
@@ -108,5 +108,3 @@ def upscale_image_extras(
 #     scale=8
 # )
 
-# with open("F:/TextTo360/output_upscaled.png", "wb") as f:
-#     f.write(upscaled_bytes)
