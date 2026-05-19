@@ -154,7 +154,7 @@ def generate_depth_map(
     }
 
 # generate_depth_map(
-#     wrapped_image_path=r"F:\TextTo360\pipeline\common files\Edited Images\upscaled_final_extended.png",
-#     infilled_image_path=r"F:\TextTo360\pipeline\common files\Final Versions\upscaled_final.png",
-#     output_dir=r"F:\TextTo360\pipeline\common files\Final Versions"
+#     wrapped_image_path=r"F:/TextTo360/pipeline/common files/Edited Images/00049_extended.jpg",
+#     infilled_image_path=r"F:/TextTo360/00049.jpg",
+#     output_dir=r"F:/TextTo360/pipeline/common files/Final Versions"
 # )

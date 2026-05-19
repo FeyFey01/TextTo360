@@ -17,6 +17,7 @@ from runners.merger import unwrap_and_merge
 from runners.viewer_360 import upload_and_view
 from runners.extend_image import extend_image_horizontal_wrap
 
+from webui.image_generation_slower import generate_image
 from webui.image_upscale_v1 import upscale_image_extras
 from webui.image_inpaint import img2img_inpaint
 from webui.image_infill_seam import img2img_inpaint_midseam
@@ -54,67 +55,78 @@ user_prompt = input("Enter scene description: ").strip()
 
 # -------- ENHANCE KEYWORDS --------
 keywords = generate_scene_keywords(user_prompt)
-print("\nEnhanced keywords for image generation:", keywords["scene"])
-
-
-
-# ============= COMMENT TO DEBUG WITH PRE-GENERATED IMAGE ==============
-
-# -------- RUN IMAGE GENERATION (VISIBLE OUTPUT) --------
-generate_cmd = [
-    sys.executable,
-    str(IMAGE_GEN_SCRIPT),
-    "-t",
-    keywords["scene"]
-]
-
-generated_images = run_cmd_live_json(generate_cmd)
-
-
-# -------- SELECT IMAGE FROM GENERATED ONES --------
-print("\nOpening image selector...")
-
-selected_image = select_image_gui(generated_images)
-
-if selected_image:
-    print("\nSelected image:", Path(selected_image).name)
-else:
-    print("\nNo image selected")
-
-# ================= END COMMENT ===================
-
-# UNCOMMENT HERE IF DEBUGGING WITH PRE-GENERATED IMAGE
-# selected_image = r"F:\TextTo360\pipeline\common files\Generated Images\abyssorangemix_seed_517337054.png"
+print("\nEnhanced keywords for image generation:", keywords["scene_keywords"])
 
 
 
 
+model = input("\n Do you want to use the slower model or fast model or pre-made image? (Slower = better quality, Fast = More options and low quality) (s/f/p): ")
+
+if model.strip().lower() == "f": # FAST MODEL (MORE OPTIONS, LOWER QUALITY)
+
+    # -------- RUN IMAGE GENERATION (VISIBLE OUTPUT) --------
+    generate_cmd = [
+        sys.executable,
+        str(IMAGE_GEN_SCRIPT),
+        "-t",
+        keywords["scene"]
+    ]
+
+    generated_images = run_cmd_live_json(generate_cmd)
 
 
+    # -------- SELECT IMAGE FROM GENERATED ONES --------
+    print("\nOpening image selector...")
+
+    selected_image = select_image_gui(generated_images)
+
+    if selected_image:
+        print("\nSelected image:", Path(selected_image).name)
+    else:
+        print("\nNo image selected")
 
 
-# -------- RUN PANORAMA SWAP (VISIBLE OUTPUT) --------
-swapped_image = swap_image_halves(
-    selected_image
-)
+    # FIX MIDDLE INSEAM IN GENERATED IMAGE 
 
-mask_img = create_center_alpha_mask(
-    image_path=swapped_image,
-    strip_width=60
-)
+    # -------- RUN PANORAMA SWAP (VISIBLE OUTPUT) --------
+    swapped_image = swap_image_halves(
+        selected_image
+    )
 
-# -------- RUN INFILL --------
-while True:
-    infilled_image = img2img_inpaint_midseam(
+    mask_img = create_center_alpha_mask(
         image_path=swapped_image,
-        mask_path=Path(mask_img)
+        strip_width=60
+    )
+
+    # -------- RUN INFILL --------
+    while True:
+        infilled_image = img2img_inpaint_midseam(
+            image_path=swapped_image,
+            mask_path=Path(mask_img)
+        )
+
+        upload_and_view(infilled_image)
+
+        answer = input("Would you like to retry? (y/n): ").strip().lower()
+        if answer == "n":
+            break
+
+
+elif model.strip().lower() == "s": # SLOWER MODEL (BETTER QUALITY, NO OPTIONS)
+
+    infilled_image = generate_image(
+        prompt=keywords["simple_prompt"],
     )
 
     upload_and_view(infilled_image)
 
-    answer = input("Would you like to retry? (y/n): ").strip().lower()
-    if answer == "n":
-        break
+else: # PRE-GENERATED IMAGE (FOR DEBUGGING)
+
+    infilled_image = r"F:\TextTo360\pipeline\common files\Generated Images\generated_random.png"
+
+    upload_and_view(infilled_image)
+
+
 
 
 
@@ -172,7 +184,9 @@ else:
 merged_img = unwrap_and_merge(
     top_disk_path=selected_top,
     main_image_path=infilled_image,
-    bottom_disk_path=selected_bottom
+    bottom_disk_path=selected_bottom,
+    top_infilled=is_fill_top,
+    bottom_infilled=is_fill_bottom
 )
 
 upload_and_view(merged_img)
@@ -181,7 +195,7 @@ upload_and_view(merged_img)
 
 upscaled_image = upscale_image_extras(
     merged_img,
-    scale=8
+    scale=4
 )
 
 upload_and_view(upscaled_image)

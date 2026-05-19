@@ -152,6 +152,8 @@ models/
 
 # Common files older versions
 old_outputs/
+masking_etc/
+common_files_deneme/
 
 # Common files: ignore output image folders
 pipeline/common files/Edited Images/

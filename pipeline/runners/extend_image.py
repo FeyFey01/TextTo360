@@ -74,4 +74,4 @@ def extend_image_horizontal_wrap(
 #         / "upscaled_final.png"
 #     )
 
-#     extend_image_horizontal_wrap(input_image_path)
+#     extend_image_horizontal_wrap("F:/TextTo360/00049.jpg")

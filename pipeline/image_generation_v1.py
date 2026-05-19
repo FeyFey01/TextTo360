@@ -63,7 +63,7 @@ negative_prompt = (
 
 # -------- GENERATION --------
 base_seed = 517337054
-batch_count = 2
+batch_count = 4
 generated_paths = []
 
 for i in range(batch_count):
